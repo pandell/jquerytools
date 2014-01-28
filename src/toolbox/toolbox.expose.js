@@ -9,7 +9,12 @@
  * Since: Mar 2010
  * Date: @DATE
  */
+
+/*global jQuery: false */
+/*jslint browser: true, vars: true, white: true */
+
 (function($) {
+    "use strict";
 
     // static constructs
     $.tools = $.tools || {version: '@VERSION'};
@@ -73,7 +78,7 @@
             if (loaded) { return this; }
 
             // configuration
-            if (typeof conf == 'string') {
+            if (typeof conf === 'string') {
                 conf = {color: conf};
             }
 
@@ -117,7 +122,7 @@
             // esc button
             if (conf.closeOnEsc) {
                 $(document).on("keydown.mask", function(e) {
-                    if (e.keyCode == 27) {
+                    if (e.keyCode === 27) {
                         $.mask.close(e);
                     }
                 });
@@ -149,7 +154,7 @@
                 });
 
                 // make elements sit on top of the mask
-                exposed = els.css({ zIndex: Math.max(conf.zIndex + 1, overlayIndex == 'auto' ? 0 : overlayIndex)});
+                exposed = els.css({ zIndex: Math.max(conf.zIndex + 1, overlayIndex === 'auto' ? 0 : overlayIndex)});
             }
 
             // reveal mask
@@ -198,7 +203,7 @@
         },
 
         isLoaded: function(fully) {
-            return fully ? loaded == 'full' : loaded;
+            return fully ? loaded === 'full' : loaded;
         },
 
         getConf: function() {
@@ -221,4 +226,4 @@
     };
 
 
-})(jQuery);
+}(jQuery));
