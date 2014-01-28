@@ -35,7 +35,7 @@
             effect: 'default',
 
             // since 1.2. fixed positioning not supported by IE6
-            fixed: !/msie/.test(navigator.userAgent.toLowerCase()) || navigator.appVersion > 6,
+            fixed: (document.documentMode || 100) > 6,
 
             left: 'center',
             load: false, // 1.2
@@ -138,17 +138,25 @@
                 if (maskConf) { $(overlay).expose(maskConf); }
 
                 // position & dimensions
-                var top = conf.top,
-                     left = conf.left,
-                     oWidth = overlay.outerWidth(true),
-                     oHeight = overlay.outerHeight(true);
-
+                var top = conf.top;
                 if (typeof top === 'string')  {
-                    top = top === 'center' ? Math.max((w.height() - oHeight) / 2, 0) :
-                        parseInt(top, 10) / 100 * w.height();
+                    if (top === 'center') {
+                        var oHeight = overlay.outerHeight(true);
+                        top = Math.round(Math.max((w.height() - oHeight) / 2, 0));
+                    } else { // treat as percentage
+                        top = Math.round(parseInt(top, 10) * w.height() / 100);
+                    }
                 }
 
-                if (left === 'center') { left = Math.max((w.width() - oWidth) / 2, 0); }
+                var left = conf.left;
+                if (typeof left === 'string') {
+                    if (left === 'center') {
+                        var oWidth = overlay.outerWidth(true);
+                        left = Math.round(Math.max((w.width() - oWidth) / 2, 0));
+                    } else { // treat as percentage
+                        left = Math.round(parseInt(left, 10) * w.width() / 100);
+                    }
+                }
 
 
                 // load effect
