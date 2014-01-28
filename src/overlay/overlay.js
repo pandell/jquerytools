@@ -9,7 +9,14 @@
  * Since: March 2008
  * Date: @DATE
  */
+
+/*global jQuery: false */
+/*jslint browser: true, vars: true, white: true */
+
 (function($) {
+    "use strict";
+
+    var instances = [], effects = {};
 
     // static constructs
     $.tools = $.tools || {version: '@VERSION'};
@@ -41,8 +48,6 @@
     };
 
 
-    var instances = [], effects = {};
-
     // the default effect. nice and easy!
     $.tools.overlay.addEffect('default',
 
@@ -73,30 +78,28 @@
 
         // private variables
         var self = this,
-             fire = trigger.add(self),
-             w = $(window),
-             closers,
-             overlay,
-             opened,
-             maskConf = $.tools.expose && (conf.mask || conf.expose),
-             uid = Math.random().toString().slice(10);
+            fire = trigger.add(self),
+            w = $(window),
+            closers,
+            overlay,
+            opened,
+            maskConf = $.tools.expose && (conf.mask || conf.expose),
+            uid = Math.random().toString().slice(10);
 
 
         // mask configuration
         if (maskConf) {
-            if (typeof maskConf == 'string') { maskConf = {color: maskConf}; }
+            if (typeof maskConf === 'string') { maskConf = {color: maskConf}; }
             maskConf.closeOnClick = maskConf.closeOnEsc = false;
         }
 
         // get overlay and trigger
-        var jq = conf.target || trigger.attr("rel");
-        overlay = jq ? $(jq) : null || trigger;
-
-        // overlay not found. cannot continue
+        var jq = conf.target || trigger.attr("rel") || trigger;
+        overlay = $(jq);
         if (!overlay.length) { throw "Could not find Overlay: " + jq; }
 
         // trigger's click event
-        if (trigger && trigger.index(overlay) == -1) {
+        if (trigger && trigger.index(overlay) === -1) {
             trigger.click(function(e) {
                 self.load(e);
                 return e.preventDefault();
@@ -140,12 +143,12 @@
                      oWidth = overlay.outerWidth(true),
                      oHeight = overlay.outerHeight(true);
 
-                if (typeof top == 'string')  {
-                    top = top == 'center' ? Math.max((w.height() - oHeight) / 2, 0) :
+                if (typeof top === 'string')  {
+                    top = top === 'center' ? Math.max((w.height() - oHeight) / 2, 0) :
                         parseInt(top, 10) / 100 * w.height();
                 }
 
-                if (left == 'center') { left = Math.max((w.width() - oWidth) / 2, 0); }
+                if (left === 'center') { left = Math.max((w.width() - oWidth) / 2, 0); }
 
 
                 // load effect
@@ -175,7 +178,7 @@
 
                     // one callback is enough if multiple instances are loaded simultaneously
                     $(document).on("keydown." + uid, function(e) {
-                        if (e.keyCode == 27) {
+                        if (e.keyCode === 27) {
                             self.close(e);
                         }
                     });
@@ -236,9 +239,10 @@
         });
 
         // callbacks
-        $.each("onBeforeLoad,onStart,onLoad,onBeforeClose,onClose".split(","), function(i, name) {
+        $.each(["onBeforeLoad", "onStart", "onLoad", "onBeforeClose", "onClose"], function () {
 
             // configuration
+            var name = this;
             if ($.isFunction(conf[name])) {
                 $(self).on(name, conf[name]);
             }
@@ -289,4 +293,4 @@
         return conf.api ? el: this;
     };
 
-})(jQuery);
+}(jQuery));
