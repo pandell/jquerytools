@@ -16,13 +16,7 @@
 (function($) {
     "use strict";
 
-    // static constructs
-    $.tools = $.tools || {version: '@VERSION'};
-
-    var tool;
-
-    tool = $.tools.expose = {
-
+    var tool = {
         conf: {
             maskId: 'exposeMask',
             loadSpeed: 'slow',
@@ -42,26 +36,9 @@
         }
     };
 
-    /* one of the greatest headaches in the tool. finally made it */
-    function viewport() {
-
-        // the horror case
-        if (/msie/.test(navigator.userAgent.toLowerCase())) {
-
-            // if there are no scrollbars then use window.height
-            var d = $(document).height(), w = $(window).height();
-
-            return [
-                window.innerWidth || 							// ie7+
-                document.documentElement.clientWidth || 	// ie6
-                document.body.clientWidth, 					// ie6 quirks mode
-                d - w < 20 ? w : d
-            ];
-        }
-
-        // other well behaving browsers
-        return [$(document).width(), $(document).height()];
-    }
+    // static constructs
+    $.tools = $.tools || {version: '@VERSION'};
+    $.tools.expose = tool;
 
     function call(fn) {
         if (fn) { return fn.call($.mask); }
@@ -96,15 +73,12 @@
                 $("body").append(mask);
             }
 
-            // set position and dimensions
-            var size = viewport();
-
             mask.css({
                 position:'absolute',
                 top: 0,
                 left: 0,
-                width: size[0],
-                height: size[1],
+                right: 0,
+                bottom: 0,
                 display: 'none',
                 opacity: conf.startOpacity,
                 zIndex: conf.zIndex
@@ -135,11 +109,6 @@
                 });
             }
 
-            // resize mask when window is resized
-            $(window).on("resize.mask", function() {
-                $.mask.fit();
-            });
-
             // exposed elements
             if (els && els.length) {
 
@@ -159,7 +128,6 @@
 
             // reveal mask
             mask.css({display: 'block'}).fadeTo(conf.loadSpeed, conf.opacity, function() {
-                $.mask.fit();
                 call(conf.onLoad);
                 loaded = "full";
             });
@@ -192,10 +160,7 @@
         },
 
         fit: function() {
-            if (loaded) {
-                var size = viewport();
-                mask.css({width: size[0], height: size[1]});
-            }
+            throw new Error("$.mask.fit has been deprecated");
         },
 
         getMask: function() {
