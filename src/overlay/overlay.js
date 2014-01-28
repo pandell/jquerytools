@@ -66,10 +66,16 @@
             }
 
             pos.position = conf.fixed ? 'fixed' : 'absolute';
-            this.getOverlay().css(pos).fadeIn(conf.speed, onLoad);
+
+            // milang, 2014-01-28: when using jquery.animate-enhanced.js with jquery 1.11,
+            // fade* is resetting top/left position of overlay element; if we set "leaveTransforms"
+            // to true, this is not happening
+            // this.getOverlay().css(pos).fadeIn(conf.speed, onLoad);
+            this.getOverlay().css(pos).animate({ opacity: "show", leaveTransforms: true }, conf.speed, onLoad);
 
         }, function(onClose) {
-            this.getOverlay().fadeOut(this.getConf().closeSpeed, onClose);
+            // this.getOverlay().fadeOut(this.getConf().closeSpeed, onClose);
+            this.getOverlay().animate({ opacity: "hide", leaveTransforms: true }, this.getConf().closeSpeed, onClose);
         }
     );
 
