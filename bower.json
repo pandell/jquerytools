@@ -1,0 +1,28 @@
+{
+  "name": "jquerytools",
+  "version": "1.2.8-alpha1",
+  "homepage": "https://github.com/pandell/jquerytools",
+  "authors": [
+    "Milan Gardian <milang@pandell.com>"
+  ],
+  "description": "The missing UI library for the Web",
+  "main": "dist/jquery.tools.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "tools",
+    "jquery-tools",
+    "jquerytools"
+  ],
+  "license": "Public Domain",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
