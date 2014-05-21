@@ -1,5 +1,5 @@
 /**
- * jQuery Tools 1.2.8 alpha1
+ * jQuery Tools 1.2.8 alpha2
  *
  * Manual concatenation of:
  * - src/overlay/overlay.js
